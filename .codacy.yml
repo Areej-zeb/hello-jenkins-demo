@@ -1,0 +1,18 @@
+---
+engines:
+  pylint:
+    enabled: true
+    python_version: 3
+  bandit:
+    enabled: true
+  flake8:
+    enabled: true
+  radon:
+    enabled: true
+    
+exclude_paths:
+  - '.venv/**'
+  - '__pycache__/**'
+  - 'instance/**'
+  - '*.pyc'
+  - '.git/**'
