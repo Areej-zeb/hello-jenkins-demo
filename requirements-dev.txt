@@ -1,0 +1,13 @@
+# Development and Testing Dependencies for Lab 9
+# Static Code Analysis Tools
+bandit==1.7.5           # Security linter for Python
+pylint==3.0.3           # Code quality checker
+flake8==7.0.0           # Style guide enforcement
+safety==2.3.5           # Checks dependencies for security vulnerabilities
+radon==6.0.1            # Code complexity analyzer
+
+# Dynamic Code Analysis Tools
+pytest==7.4.3           # Testing framework
+pytest-cov==4.1.0       # Coverage plugin
+selenium==4.15.2        # Browser automation for testing
+requests==2.32.3        # HTTP library for API testing

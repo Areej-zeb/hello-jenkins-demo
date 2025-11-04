@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Add Contact{% endblock %}
+{% block content %}
+<h2>Add Contact</h2>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    
+    <div>
+        {{ form.name.label }}<br>
+        {{ form.name() }}
+        {% if form.name.errors %}
+            <p style="color: red;">{{ form.name.errors[0] }}</p>
+        {% endif %}
+    </div>
+
+    <div>
+        {{ form.email.label }}<br>
+        {{ form.email() }}
+        {% if form.email.errors %}
+            <p style="color: red;">{{ form.email.errors[0] }}</p>
+        {% endif %}
+    </div>
+
+    <div>
+        {{ form.phone.label }}<br>
+        {{ form.phone() }}
+        {% if form.phone.errors %}
+            <p style="color: red;">{{ form.phone.errors[0] }}</p>
+        {% endif %}
+    </div>
+
+    <div>
+        {{ form.address.label }}<br>
+        {{ form.address() }}
+        {% if form.address.errors %}
+            <p style="color: red;">{{ form.address.errors[0] }}</p>
+        {% endif %}
+    </div>
+
+    {{ form.submit() }}
+</form>
+
+<p><a href="/dashboard">Back to Dashboard</a></p>
+
+<hr>
+<h4>Test Malicious Inputs (will be blocked):</h4>
+<code>
+Name: &lt;script&gt;alert('XSS')&lt;/script&gt;<br>
+Address: 123 Main'; DROP TABLE contacts; --
+</code>
+{% endblock %}

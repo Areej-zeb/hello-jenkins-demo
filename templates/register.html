@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<h2>Register</h2>
+
+<form method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    
+    <div>
+        <label>Username:</label><br>
+        <input type="text" name="username" required>
+        <small>No SQL keywords or HTML tags allowed</small>
+    </div>
+
+    <div>
+        <label>Password:</label><br>
+        <input type="password" name="password" required>
+    </div>
+
+    <button type="submit">Register</button>
+</form>
+
+<p>Already have an account? <a href="/login">Login here</a></p>
+
+<hr>
+<h4>Test These Malicious Inputs (will be blocked):</h4>
+<code>
+Username: admin'; DROP TABLE users; --<br>
+Username: &lt;script&gt;alert('XSS')&lt;/script&gt;
+</code>
+{% endblock %}

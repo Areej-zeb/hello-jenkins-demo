@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<h1>Secure Flask Application</h1>
+<p>A simple Flask app with security features to prevent SQL Injection and XSS attacks.</p>
+
+<h3>Security Features:</h3>
+<ul>
+    <li><span class="badge">✓</span> SQL Injection Prevention (Custom Validators + Parameterized Queries)</li>
+    <li><span class="badge">✓</span> XSS Prevention (HTML Tag Filtering + Input Sanitization)</li>
+    <li><span class="badge">✓</span> CSRF Protection (Flask-WTF Tokens)</li>
+    <li><span class="badge">✓</span> Secure Session Management (HttpOnly, SameSite, Timeout)</li>
+    <li><span class="badge">✓</span> Secure Error Handling (Custom Error Pages, No Info Disclosure)</li>
+    <li><span class="badge">✓</span> Secure Password Storage (Bcrypt Hashing with Salt)</li>
+</ul>
+
+<p><strong>Get started:</strong> <a href="/register">Register</a> or <a href="/login">Login</a></p>
+{% endblock %}

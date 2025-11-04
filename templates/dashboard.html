@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2>Dashboard - Welcome {{ session.get('username') }}!</h2>
+
+<p><a href="/contact"><button>Add New Contact</button></a></p>
+
+{% if contacts %}
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for contact in contacts %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ contact.name }}</td>
+            <td>{{ contact.email }}</td>
+            <td>{{ contact.phone }}</td>
+            <td>{{ contact.address }}</td>
+            <td>
+                <form method="POST" action="/delete/{{ contact.id }}" style="display:inline;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" onclick="return confirm('Delete this contact?')" 
+                            style="max-width:100px; background:#dc3545;">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No contacts yet. <a href="/contact">Add your first contact</a></p>
+{% endif %}
+
+<p><small>Note: All data is sanitized and CSRF protected</small></p>
+{% endblock %}
