@@ -9,8 +9,11 @@ pipeline {
         }
 
         stage('Test') {
+            when {
+                expression { return true }
+            }
             steps {
-                echo 'Testing..'
+                echo 'Running tests only if condition is true'
             }
         }
 
