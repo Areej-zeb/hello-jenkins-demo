@@ -1,10 +1,14 @@
 pipeline {
     agent any
 
+    environment {
+        VERSION = '1.0.0'
+    }
+
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
+                echo "Building version: ${env.VERSION}"
             }
         }
 
@@ -19,7 +23,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
+                echo "Deploying version: ${env.VERSION}"
             }
         }
     }
