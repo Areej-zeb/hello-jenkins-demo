@@ -5,10 +5,20 @@ pipeline {
         VERSION = '1.0.0'
     }
 
+    tools {
+        // This name MUST match the Maven installation name in:
+        // Dashboard → Manage Jenkins → Tools → Maven installations
+        maven 'MyMaven'
+    }
+
     stages {
         stage('Build') {
             steps {
                 echo "Building version: ${env.VERSION}"
+                // On Linux/macOS agents:
+                sh 'mvn -version'
+                // On Windows agents you would use:
+                // bat 'mvn -version'
             }
         }
 
