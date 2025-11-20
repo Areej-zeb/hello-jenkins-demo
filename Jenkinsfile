@@ -1,46 +1,73 @@
 pipeline {
     agent any
 
-    environment {
-        VERSION = '1.0.0'
-    }
-
     tools {
-        // This name MUST match the Maven installation name in:
-        // Dashboard → Manage Jenkins → Tools → Maven installations
-        maven 'MyMaven'
+        // Ensure sonar-scanner tool is available by this name
+        // (must match the name from Manage Jenkins → Tools)
+        // This block might already exist in your Jenkinsfile
+        // example:
+        // python 'Python-3'
     }
 
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                echo "Building version: ${env.VERSION}"
-                // On Linux/macOS agents:
-                sh 'mvn -version'
-                // On Windows agents you would use:
-                // bat 'mvn -version'
+                git branch: 'main', url: 'https://github.com/Areej-zeb/hello-jenkins-demo.git'
             }
         }
 
-        stage('Test') {
-            when {
-                expression { return true }
-            }
+        // You probably already have something similar:
+        stage('Build & Unit Tests') {
             steps {
-                echo 'Running tests only if condition is true'
+                sh 'python -m pip install --upgrade pip'
+                sh 'pip install -r requirements-dev.txt'
+                // run your tests or existing static checks here
+                // e.g. pytest, flake8, bandit, etc.
             }
         }
 
+        // 🔐 NEW STAGE: SAST with SonarQube
+        stage('SonarQube SAST') {
+            steps {
+                script {
+                    // Use Jenkins SonarQube server config
+                    withSonarQubeEnv('local-sonarqube') {
+                        def scannerHome = tool 'sonar-scanner-4'
+                        sh """
+                          ${scannerHome}/bin/sonar-scanner \
+                            -Dsonar.projectKey=hello-jenkins-demo \
+                            -Dsonar.projectName=hello-jenkins-demo
+                          """
+                    }
+                }
+            }
+        }
+
+        // 🔐 NEW STAGE: Quality Gate – block deployment on bad security
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 2, unit: 'MINUTES') {
+                    def qg = waitForQualityGate abortPipeline: true
+                    echo "Quality Gate status: ${qg.status}"
+                }
+            }
+        }
+
+        // Whatever you already had for deploy, keep it after Quality Gate
         stage('Deploy') {
+            when {
+                branch 'main'
+            }
             steps {
-                echo "Deploying version: ${env.VERSION}"
+                // your existing deploy steps
+                echo "Deploying application..."
             }
         }
     }
 
     post {
         always {
-            echo 'The build has completed.'
+            echo "Pipeline run finished"
         }
     }
 }
